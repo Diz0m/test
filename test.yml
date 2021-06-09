@@ -1,0 +1,9 @@
+---
+- name: test
+  hosts: all
+  vars:
+    mac: "{{ hostvars[inventory_hostname].ansible_default_ipv4.macaddress }}"
+
+  tasks:
+  - name: test
+    local_action: copy content={{ mac }} dest=/opt/ansible/REGION/TEST/test
