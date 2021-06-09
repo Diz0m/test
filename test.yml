@@ -6,4 +6,4 @@
 
   tasks:
   - name: test
-    local_action: copy content={{ mac }} dest=/opt/ansible/REGION/TEST/test
+    debug: msg='{{ mac }}'
