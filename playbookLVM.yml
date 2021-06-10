@@ -2,8 +2,8 @@
 - name: Install and mount LVM volume
   hosts: all
 
-  vars: 
-    smb_conf: ./smb.conf   
+  vars:
+    smb_conf: ./smb.conf
 
   tasks:
   - name: disable firewalld
@@ -20,7 +20,7 @@
     dnf: name=mdadm state=installed
 
   - name: mdadm
-    shell: mdadm --zero-superblock --force /dev/sdb && mdadm --zero-superblock --force /dev/sdc && mdadm --zero-superblock --force /dev/sdd &&  mdadm --zero-superblock --force /dev/sde 
+    shell: mdadm --zero-superblock --force /dev/sdb && mdadm --zero-superblock --force /dev/sdc && mdadm --zero-superblock --force /dev/sdd &&  mdadm --zero-superblock --force /dev/sde
 
   - name: wipefs
     shell: wipefs --all --force /dev/sdb && wipefs --all --force /dev/sdc && wipefs --all --force /dev/sdd && wipefs --all --force /dev/sde
@@ -45,11 +45,11 @@
     when: inventory_hostname == "Ansible"
 
   - name: mkdir for lvm
-    shell: mkdir /opt/lvm  
+    shell: mkdir /opt/lvm
     when: inventory_hostname == "Ansible"
 
   - name: automount
-    shell: echo "/dev/LVM/LVM-smb    /opt/lvm    ext4    defaults    0  0" >> /etc/fstab  
+    shell: echo "/dev/LVM/LVM-smb    /opt/lvm    ext4    defaults    0  0" >> /etc/fstab
     when: inventory_hostname == "Ansible"
 
   - name: mount -a
@@ -61,7 +61,7 @@
     when: inventory_hostname == "Ansible"
 
   - name: change the samba config file
-    copy: src={{ smb_conf }}  dest=/etc/samba/smb.conf 
+    copy: src={{ smb_conf }}  dest=/etc/samba/smb.conf
     when: inventory_hostname == "Ansible"
 
   - name: smbpasswd -a
@@ -75,14 +75,14 @@
   - name: install samba-client
     yum: name=samba-client state=installed
 
-#  - name: mkdir
-#    shell: mkdir /opt/LVM
-#    when: inventory_hostname != "Ansible"
+  - name: mkdir
+    shell: mkdir /opt/LVM
+    when: inventory_hostname != "Ansible"
 
-#  - name: mount lvm for /opt/LVM
-#    shell: echo "//{{ lvm_serv_ip }}/lvm    /opt/LVM  cifs   username=root,password=toor,dir_mode=0777,file_mode=0777    0 0" >> /etc/fstab
-#    when: inventory_hostname != "Ansible"
+  - name: mount lvm for /opt/LVM
+    shell: echo "//{{ lvm_serv_ip }}/lvm    /opt/LVM  cifs   username=root,password=toor,dir_mode=0777,file_mode=0777    0 0" >> /etc/fstab
+    when: inventory_hostname != "Ansible"
 
-#  - name: mount -a
-#    shell: mount -a
-#    when: inventory_hostname != "Ansible"
+  - name: mount -a
+    shell: mount -a
+    when: inventory_hostname != "Ansible"
