@@ -3,7 +3,8 @@
   hosts: all
   vars:
     mac: "{{ hostvars[inventory_hostname].ansible_default_ipv4.macaddress }}"
+    path: /opt/smb.conf
 
   tasks:
-  - name: test
-    debug: msg='{{ mac }}'
+  - name: cp
+    copy: src={{ path }} dest=/opt/test
